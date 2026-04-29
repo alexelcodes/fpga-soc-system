@@ -1,0 +1,53 @@
+{
+   "ActiveEmotionalView":"Default View",
+   "Default View_ScaleFactor":"1.12055",
+   "Default View_TopLeft":"10,-13",
+   "ExpandedHierarchyInLayout":"",
+   "guistr":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:21.0
+#  -string -flagsOSRD
+preplace port DDR -pg 1 -lvl 5 -x 1280 -y 50 -defaultsOSRD
+preplace port FIXED_IO -pg 1 -lvl 5 -x 1280 -y 80 -defaultsOSRD
+preplace port gpio_rtl -pg 1 -lvl 5 -x 1280 -y 210 -defaultsOSRD
+preplace port port-id_led4_r_0 -pg 1 -lvl 5 -x 1280 -y 270 -defaultsOSRD
+preplace port port-id_led4_g_0 -pg 1 -lvl 5 -x 1280 -y 300 -defaultsOSRD
+preplace port port-id_led4_b_0 -pg 1 -lvl 5 -x 1280 -y 330 -defaultsOSRD
+preplace port port-id_led5_r_0 -pg 1 -lvl 5 -x 1280 -y 360 -defaultsOSRD
+preplace port port-id_led5_g_0 -pg 1 -lvl 5 -x 1280 -y 390 -defaultsOSRD
+preplace port port-id_led5_b_0 -pg 1 -lvl 5 -x 1280 -y 420 -defaultsOSRD
+preplace port port-id_oled_din_0 -pg 1 -lvl 5 -x 1280 -y 450 -defaultsOSRD
+preplace port port-id_oled_clk_0 -pg 1 -lvl 5 -x 1280 -y 480 -defaultsOSRD
+preplace port port-id_oled_cs_0 -pg 1 -lvl 5 -x 1280 -y 510 -defaultsOSRD
+preplace port port-id_oled_dc_0 -pg 1 -lvl 5 -x 1280 -y 540 -defaultsOSRD
+preplace port port-id_oled_res_0 -pg 1 -lvl 5 -x 1280 -y 570 -defaultsOSRD
+preplace portBus led_0 -pg 1 -lvl 5 -x 1280 -y 240 -defaultsOSRD
+preplace inst processing_system7_0 -pg 1 -lvl 1 -x 220 -y 110 -defaultsOSRD
+preplace inst axi_gpio_0 -pg 1 -lvl 3 -x 860 -y 220 -defaultsOSRD
+preplace inst ps7_0_axi_periph -pg 1 -lvl 2 -x 580 -y 200 -defaultsOSRD
+preplace inst rst_ps7_0_100M -pg 1 -lvl 1 -x 220 -y 320 -defaultsOSRD
+preplace inst pl_top_0 -pg 1 -lvl 4 -x 1110 -y 400 -defaultsOSRD
+preplace netloc axi_gpio_0_gpio_io_o 1 3 1 990 230n
+preplace netloc pl_top_0_led 1 4 1 1220J 240n
+preplace netloc pl_top_0_led4_b 1 4 1 1260J 330n
+preplace netloc pl_top_0_led4_g 1 4 1 1250J 300n
+preplace netloc pl_top_0_led4_r 1 4 1 1240J 270n
+preplace netloc pl_top_0_led5_b 1 4 1 1260J 410n
+preplace netloc pl_top_0_led5_g 1 4 1 NJ 390
+preplace netloc pl_top_0_led5_r 1 4 1 1220J 360n
+preplace netloc pl_top_0_oled_clk 1 4 1 1250J 450n
+preplace netloc pl_top_0_oled_cs 1 4 1 1240J 470n
+preplace netloc pl_top_0_oled_dc 1 4 1 1230J 490n
+preplace netloc pl_top_0_oled_din 1 4 1 1260J 430n
+preplace netloc pl_top_0_oled_res 1 4 1 1220J 510n
+preplace netloc processing_system7_0_FCLK_CLK0 1 0 4 30 220 420 50 730 140 1000J
+preplace netloc processing_system7_0_FCLK_RESET0_N 1 0 2 30 420 410
+preplace netloc rst_ps7_0_100M_peripheral_aresetn 1 1 2 440 70 720J
+preplace netloc axi_gpio_0_GPIO 1 3 2 NJ 210 NJ
+preplace netloc processing_system7_0_DDR 1 1 4 NJ 60 NJ 60 NJ 60 1220J
+preplace netloc processing_system7_0_FIXED_IO 1 1 4 NJ 80 NJ 80 NJ 80 NJ
+preplace netloc processing_system7_0_M_AXI_GP0 1 1 1 430 120n
+preplace netloc ps7_0_axi_periph_M00_AXI 1 2 1 N 200
+levelinfo -pg 1 0 220 580 860 1110 1280
+pagesize -pg 1 -db -bbox -sgen 0 0 1400 590
+"
+}
+

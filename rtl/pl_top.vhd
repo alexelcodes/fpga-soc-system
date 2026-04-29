@@ -15,18 +15,25 @@ library IEEE;
 
 entity pl_top is
   port (
-    sysclk : in  std_logic;                    -- 125 MHz system clock
-    ctrl   : in  std_logic_vector(4 downto 0); -- from AXI GPIO (PS->PL)
-    led    : out std_logic_vector(3 downto 0); -- small green LEDs
+    sysclk   : in  std_logic;                    -- 125 MHz system clock
+    ctrl     : in  std_logic_vector(4 downto 0); -- from AXI GPIO (PS->PL)
+    led      : out std_logic_vector(3 downto 0); -- small green LEDs
 
     -- RGB LEDs (PWM outputs)
-    led4_r : out std_logic;
-    led4_g : out std_logic;
-    led4_b : out std_logic;
+    led4_r   : out std_logic;
+    led4_g   : out std_logic;
+    led4_b   : out std_logic;
 
-    led5_r : out std_logic;
-    led5_g : out std_logic;
-    led5_b : out std_logic
+    led5_r   : out std_logic;
+    led5_g   : out std_logic;
+    led5_b   : out std_logic;
+
+    -- OLED display
+    oled_din : out std_logic;
+    oled_clk : out std_logic;
+    oled_cs  : out std_logic;
+    oled_dc  : out std_logic;
+    oled_res : out std_logic
   );
 end entity;
 
@@ -187,6 +194,17 @@ begin
       sel_r      => sel5_r,
       sel_g      => sel5_g,
       sel_b      => sel5_b
+    );
+
+  u_oled: entity work.oled_controller
+    port map (
+      clk      => sysclk,
+      n_Reset  => n_Reset,
+      oled_din => oled_din,
+      oled_clk => oled_clk,
+      oled_cs  => oled_cs,
+      oled_dc  => oled_dc,
+      oled_res => oled_res
     );
 
   --------------------------------------------------------------------

@@ -144,7 +144,7 @@ This allows full control of the RGB dimmers from software running on the ARM pro
 
 A Vivado Block Design was created to connect the Processing System to the custom PL logic.
 
-![Block Diagram](figures/rgb_pwm_system.png)
+![Block Diagram](figures/rgb-pwm-system.png)
 
 ### Block Design structure
 

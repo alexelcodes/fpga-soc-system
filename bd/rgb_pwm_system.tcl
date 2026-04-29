@@ -18,22 +18,15 @@ variable script_folder
 set script_folder [_tcl::get_script_folder]
 
 ################################################################
-# Check if script is running in correct Vivado version.
+# Vivado version info
+# Soft warning only: allow nearby Vivado versions to try running.
 ################################################################
-set scripts_vivado_version 2024.1
+set scripts_vivado_version 2025.2
 set current_vivado_version [version -short]
 
 if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
    puts ""
-   if { [string compare $scripts_vivado_version $current_vivado_version] > 0 } {
-      catch {common::send_gid_msg -ssname BD::TCL -id 2042 -severity "ERROR" " This script was generated using Vivado <$scripts_vivado_version> and is being run in <$current_vivado_version> of Vivado. Sourcing the script failed since it was created with a future version of Vivado."}
-
-   } else {
-     catch {common::send_gid_msg -ssname BD::TCL -id 2041 -severity "ERROR" "This script was generated using Vivado <$scripts_vivado_version> and is being run in <$current_vivado_version> of Vivado. Please run the script in Vivado <$scripts_vivado_version> then open the design in Vivado <$current_vivado_version>. Upgrade the design by running \"Tools => Report => Report IP Status...\", then run write_bd_tcl to create an updated script."}
-
-   }
-
-   return 1
+   catch {common::send_gid_msg -ssname BD::TCL -id 2041 -severity "WARNING" "This block design Tcl was generated using Vivado <$scripts_vivado_version> and is being run in <$current_vivado_version>. The script will continue, but IP upgrade or BD Tcl regeneration may be required for full compatibility."}
 }
 
 ################################################################
@@ -243,6 +236,11 @@ proc create_root_design { parentCell } {
   set led5_r_0 [ create_bd_port -dir O led5_r_0 ]
   set led5_g_0 [ create_bd_port -dir O led5_g_0 ]
   set led5_b_0 [ create_bd_port -dir O led5_b_0 ]
+  set oled_din_0 [ create_bd_port -dir O oled_din_0 ]
+  set oled_clk_0 [ create_bd_port -dir O -type clk oled_clk_0 ]
+  set oled_cs_0 [ create_bd_port -dir O oled_cs_0 ]
+  set oled_dc_0 [ create_bd_port -dir O oled_dc_0 ]
+  set oled_res_0 [ create_bd_port -dir O oled_res_0 ]
 
   # Create instance: processing_system7_0, and set properties
   set processing_system7_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7:5.5 processing_system7_0 ]
@@ -814,17 +812,47 @@ proc create_root_design { parentCell } {
   connect_bd_intf_net -intf_net ps7_0_axi_periph_M00_AXI [get_bd_intf_pins ps7_0_axi_periph/M00_AXI] [get_bd_intf_pins axi_gpio_0/S_AXI]
 
   # Create port connections
-  connect_bd_net -net axi_gpio_0_gpio_io_o [get_bd_pins axi_gpio_0/gpio_io_o] [get_bd_pins pl_top_0/ctrl]
-  connect_bd_net -net pl_top_0_led [get_bd_pins pl_top_0/led] [get_bd_ports led_0]
-  connect_bd_net -net pl_top_0_led4_b [get_bd_pins pl_top_0/led4_b] [get_bd_ports led4_b_0]
-  connect_bd_net -net pl_top_0_led4_g [get_bd_pins pl_top_0/led4_g] [get_bd_ports led4_g_0]
-  connect_bd_net -net pl_top_0_led4_r [get_bd_pins pl_top_0/led4_r] [get_bd_ports led4_r_0]
-  connect_bd_net -net pl_top_0_led5_b [get_bd_pins pl_top_0/led5_b] [get_bd_ports led5_b_0]
-  connect_bd_net -net pl_top_0_led5_g [get_bd_pins pl_top_0/led5_g] [get_bd_ports led5_g_0]
-  connect_bd_net -net pl_top_0_led5_r [get_bd_pins pl_top_0/led5_r] [get_bd_ports led5_r_0]
-  connect_bd_net -net processing_system7_0_FCLK_CLK0 [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK] [get_bd_pins ps7_0_axi_periph/S00_ACLK] [get_bd_pins rst_ps7_0_100M/slowest_sync_clk] [get_bd_pins axi_gpio_0/s_axi_aclk] [get_bd_pins ps7_0_axi_periph/M00_ACLK] [get_bd_pins ps7_0_axi_periph/ACLK] [get_bd_pins pl_top_0/sysclk]
-  connect_bd_net -net processing_system7_0_FCLK_RESET0_N [get_bd_pins processing_system7_0/FCLK_RESET0_N] [get_bd_pins rst_ps7_0_100M/ext_reset_in]
-  connect_bd_net -net rst_ps7_0_100M_peripheral_aresetn [get_bd_pins rst_ps7_0_100M/peripheral_aresetn] [get_bd_pins ps7_0_axi_periph/S00_ARESETN] [get_bd_pins axi_gpio_0/s_axi_aresetn] [get_bd_pins ps7_0_axi_periph/M00_ARESETN] [get_bd_pins ps7_0_axi_periph/ARESETN]
+  connect_bd_net -net axi_gpio_0_gpio_io_o  [get_bd_pins axi_gpio_0/gpio_io_o] \
+  [get_bd_pins pl_top_0/ctrl]
+  connect_bd_net -net pl_top_0_led  [get_bd_pins pl_top_0/led] \
+  [get_bd_ports led_0]
+  connect_bd_net -net pl_top_0_led4_b  [get_bd_pins pl_top_0/led4_b] \
+  [get_bd_ports led4_b_0]
+  connect_bd_net -net pl_top_0_led4_g  [get_bd_pins pl_top_0/led4_g] \
+  [get_bd_ports led4_g_0]
+  connect_bd_net -net pl_top_0_led4_r  [get_bd_pins pl_top_0/led4_r] \
+  [get_bd_ports led4_r_0]
+  connect_bd_net -net pl_top_0_led5_b  [get_bd_pins pl_top_0/led5_b] \
+  [get_bd_ports led5_b_0]
+  connect_bd_net -net pl_top_0_led5_g  [get_bd_pins pl_top_0/led5_g] \
+  [get_bd_ports led5_g_0]
+  connect_bd_net -net pl_top_0_led5_r  [get_bd_pins pl_top_0/led5_r] \
+  [get_bd_ports led5_r_0]
+  connect_bd_net -net pl_top_0_oled_clk  [get_bd_pins pl_top_0/oled_clk] \
+  [get_bd_ports oled_clk_0]
+  connect_bd_net -net pl_top_0_oled_cs  [get_bd_pins pl_top_0/oled_cs] \
+  [get_bd_ports oled_cs_0]
+  connect_bd_net -net pl_top_0_oled_dc  [get_bd_pins pl_top_0/oled_dc] \
+  [get_bd_ports oled_dc_0]
+  connect_bd_net -net pl_top_0_oled_din  [get_bd_pins pl_top_0/oled_din] \
+  [get_bd_ports oled_din_0]
+  connect_bd_net -net pl_top_0_oled_res  [get_bd_pins pl_top_0/oled_res] \
+  [get_bd_ports oled_res_0]
+  connect_bd_net -net processing_system7_0_FCLK_CLK0  [get_bd_pins processing_system7_0/FCLK_CLK0] \
+  [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK] \
+  [get_bd_pins ps7_0_axi_periph/S00_ACLK] \
+  [get_bd_pins rst_ps7_0_100M/slowest_sync_clk] \
+  [get_bd_pins axi_gpio_0/s_axi_aclk] \
+  [get_bd_pins ps7_0_axi_periph/M00_ACLK] \
+  [get_bd_pins ps7_0_axi_periph/ACLK] \
+  [get_bd_pins pl_top_0/sysclk]
+  connect_bd_net -net processing_system7_0_FCLK_RESET0_N  [get_bd_pins processing_system7_0/FCLK_RESET0_N] \
+  [get_bd_pins rst_ps7_0_100M/ext_reset_in]
+  connect_bd_net -net rst_ps7_0_100M_peripheral_aresetn  [get_bd_pins rst_ps7_0_100M/peripheral_aresetn] \
+  [get_bd_pins ps7_0_axi_periph/S00_ARESETN] \
+  [get_bd_pins axi_gpio_0/s_axi_aresetn] \
+  [get_bd_pins ps7_0_axi_periph/M00_ARESETN] \
+  [get_bd_pins ps7_0_axi_periph/ARESETN]
 
   # Create address segments
   assign_bd_address -offset 0x41200000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs axi_gpio_0/S_AXI/Reg] -force
